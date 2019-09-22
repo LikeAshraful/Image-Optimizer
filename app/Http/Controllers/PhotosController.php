@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use ImageOptimizer;
 
 class PhotosController extends Controller
 {
-    private $photos_path; 
+    private $original_photos_path; 
+    private $optimized_photos_path;
+    
     public function __construct()
     {
-        $this->photos_path = public_path('/images');
+        $this->original_photos_path = public_path('/images');
+        $this->optimized_photos_path = public_path('/images/optimized/');
     }
     
     public function store(Request $request) {
@@ -19,16 +23,22 @@ class PhotosController extends Controller
         if (!is_array($photos)) {
             $photos = [$photos];
         } 
-        if (!is_dir($this->photos_path)) {
-            mkdir($this->photos_path, 0777);
+        if (!is_dir($this->original_photos_path)) {
+            mkdir($this->original_photos_path, 0777);
+        }
+        if (!is_dir($this->optimized_photos_path)) {
+            mkdir($this->optimized_photos_path, 0777);
         }
 
         for ($i = 0; $i < count($photos); $i++) {
 
             $photo = $photos[$i];
             $fileName = $photo->getClientOriginalName();          
-            $save_name = $fileName . str_random(2) . '.' . $photo->getClientOriginalExtension(); 
-            $photo->move($this->photos_path, $save_name);
+            $optimizedImgName = str_random(5) . '.' . $photo->getClientOriginalExtension();
+            
+            $photo->move($this->original_photos_path, $fileName);
+
+            ImageOptimizer::optimize($this->original_photos_path.'/'.$fileName, $this->optimized_photos_path .'/'. $optimizedImgName);
  
         }
 
