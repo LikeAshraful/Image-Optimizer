@@ -11,8 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', 'PhotosController@index');
 Route::post('/photos', 'PhotosController@store');
+Route::get('/download_img', 'PhotosController@download_images')->name('img_download');

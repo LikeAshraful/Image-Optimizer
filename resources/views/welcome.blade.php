@@ -113,6 +113,11 @@
                     </form>
                 </div>
 
+                <div class="download_button">
+                    <a href="/download_img" id="download_btn" style="padding: 10px;background-color: #358ff6; border: none; color: #ffffff; font-size: 15px; font-weight: bold;
+                    ">Download Images</a>
+                </div>
+
                 {{--Dropzone Preview Template--}}
             <div id="preview" style="display: none;">
         
@@ -156,6 +161,8 @@
             </div>           
 
         </div>
+
+   
 
 
     </body>
